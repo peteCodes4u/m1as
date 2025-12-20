@@ -1,0 +1,9 @@
+{
+  "devDependencies": {
+    "@types/node": "^25.0.3",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "crypto": "^1.0.1"
+  }
+}
