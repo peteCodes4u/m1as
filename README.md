@@ -1,6 +1,7 @@
 m1as is a MERN first asset service
 
 mern-asset-service/
+```ruby
 ├─ core/
 │  ├─ assetManager.ts        ← storage + validation
 │  ├─ assetRepository.ts     ← MongoDB logic
@@ -24,4 +25,4 @@ mern-asset-service/
 │  └─ useAssetUpload.ts
 │
 └─ index.ts
-
+```
