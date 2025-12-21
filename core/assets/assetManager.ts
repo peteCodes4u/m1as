@@ -12,7 +12,7 @@ export class AssetManager {
     private storage: AssetStorageAdapter,
     private repository: AssetRepository,
     private cache?: AssetCache
-  ) {}
+  ) { }
 
   async upload(input: AssetUploadInput): Promise<AssetRecord> {
     // validation lives here
@@ -55,6 +55,14 @@ export class AssetManager {
     }
 
     return asset;
+  }
+
+  async getFileById(id: string): Promise<{ buffer: Buffer; filename: string; mimeType: string } | null> {
+    const asset = await this.get(id); // use existing public get()
+    if (!asset) return null;
+
+    // storage is private but accessible here
+    return this.storage.get(asset.storagePath);
   }
 
   async delete(id: string): Promise<void> {

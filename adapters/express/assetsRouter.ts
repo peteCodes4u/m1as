@@ -38,7 +38,6 @@ export function createAssetRouter(options: AssetRouterOptions): Router {
     }
   );
 
-  // get asset
   // Get asset metadata
   router.get("/:id", async (req: Request, res: Response) => {
     try {
@@ -52,6 +51,20 @@ export function createAssetRouter(options: AssetRouterOptions): Router {
     }
   });
 
+  // File retrieval endpoint
+  router.get("/:id/file", async (req: Request, res: Response) => {
+    try {
+      const file = await assetManager.getFileById(req.params.id); // <-- safe call
+      if (!file) return res.status(404).json({ error: "File not found" });
+
+      res.setHeader("Content-Type", file.mimeType);
+      res.setHeader("Content-Disposition", `inline; filename="${file.filename}"`);
+      res.send(file.buffer);
+    } catch (err: any) {
+      console.error(err);
+      res.status(500).json({ error: err.message });
+    }
+  });
 
   // Delete asset
   router.delete("/:id", async (req: Request, res: Response) => {

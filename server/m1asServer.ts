@@ -1,50 +1,53 @@
+import mongoose from "mongoose";
 import express from "express";
-import path from "path";
 
 import { AssetManager } from "../core/assets/assetManager.js";
-import { DiskStorageAdapter } from "../storage/disk/diskStorageAdapter.js";
 import { createAssetRouter } from "../adapters/express/assetsRouter.js";
-import { InMemoryAssetRepo } from "./inMemoryAssetRepo.js";
+import { MongoAssetRepo } from "../core/assets/mongoAssetRepo.js";
+import { MongoStorageAdapter } from "../storage/mongo/mongoStorageAdapter.js"; // new adapter
 
 const PORT = 3000;
 
-// 1️⃣ Express app
-const app = express();
+async function startServer() {
+  // 1. Connect to Mongo
+  try {
+    await mongoose.connect(process.env.MONGO_URI || "mongodb://localhost:27017/m1as");
+    console.log("Connected to MongoDB");
+  } catch (err) {
+    console.error("MongoDB connection failed:", err);
+    process.exit(1);
+  }
 
-// 2️⃣ Disk storage (uploads folder)
-const uploadsDir = path.resolve(process.cwd(), "uploads");
+  // 2. Express setup
+  const app = express();
 
-const storage = new DiskStorageAdapter({
-  rootDir: uploadsDir,
-  publicBaseUrl: "/uploads"
-});
+  // 3. Mongo-backed storage & repository
+  const storage = new MongoStorageAdapter(); // stores actual file bytes in Mongo (GridFS)
+  const repository = new MongoAssetRepo(); // stores metadata
 
-// 3️⃣ Repository (swap with Mongo later)
-const repository = new InMemoryAssetRepo();
+  // 4. Asset manager (core)
+  const assetManager = new AssetManager(storage, repository);
 
-// 4️⃣ Asset manager (core)
-const assetManager = new AssetManager(storage, repository);
+  // 5. Asset API
+  app.use(
+    "/assets",
+    createAssetRouter({
+      assetManager,
+      getOwnerId: (req) => req.headers["x-user-id"] as string | undefined,
+    })
+  );
 
-// 5️⃣ Serve uploaded files
-app.use("/uploads", express.static(uploadsDir));
+  // 6. Health check
+  app.get("/health", (_req, res) => {
+    res.json({ status: "ok" });
+  });
 
-// 6️⃣ Asset API
-app.use(
-  "/assets",
-  createAssetRouter({
-    assetManager,
-    getOwnerId: (req) =>
-      req.headers["x-user-id"] as string | undefined
-  })
-);
+  // 7. Start server
+  app.listen(PORT, () => {
+    console.log(`Asset server running on http://localhost:${PORT}`);
+    console.log(`POST files to http://localhost:${PORT}/assets`);
+    console.log(`Health check available at http://localhost:${PORT}/health`);
+  });
+}
 
-// 7️⃣ Health check (useful for Render later)
-app.get("/health", (_req, res) => {
-  res.json({ status: "ok" });
-});
-
-// 8️⃣ Start server
-app.listen(PORT, () => {
-  console.log(`Asset server running on http://localhost:${PORT}`);
-  console.log(`POST files to http://localhost:${PORT}/assets`);
-});
+startServer();

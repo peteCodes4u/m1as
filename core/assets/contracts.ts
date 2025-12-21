@@ -19,7 +19,7 @@ export interface AssetStorageAdapter {
     storagePath: string;
     publicUrl?: string;
   }>;
-
+  get(storagePath: string): Promise<{ buffer: Buffer; filename: string; mimeType: string } | null>;
   delete(storagePath: string): Promise<void>;
 }
 
