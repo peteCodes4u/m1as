@@ -1,10 +1,10 @@
 import express from "express";
 import path from "path";
 
-import { AssetManager } from "../core/assets/assetManager";
-import { DiskStorageAdapter } from "../storage/disk";
-import { createAssetRouter } from "../adapters/express";
-import { InMemoryAssetRepo } from "./inMemoryAssetRepo";
+import { AssetManager } from "../core/assets/assetManager.js";
+import { DiskStorageAdapter } from "../storage/disk/diskStorageAdapter.js";
+import { createAssetRouter } from "../adapters/express/assetsRouter.js";
+import { InMemoryAssetRepo } from "./inMemoryAssetRepo.js";
 
 const PORT = 3000;
 

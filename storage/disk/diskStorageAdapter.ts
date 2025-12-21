@@ -1,7 +1,7 @@
 import { promises as fs } from "fs";
 import path from "path";
 import { randomUUID } from "crypto";
-import { AssetStorageAdapter } from "../../core/assets/contracts";
+import { AssetStorageAdapter } from "../../core/assets/contracts.js";
 
 interface DiskStorageOptions {
   rootDir: string;        // absolute path on disk

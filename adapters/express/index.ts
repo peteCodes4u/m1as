@@ -1,1 +1,1 @@
-export * from "./assetsRouter";
+export * from "./assetsRouter.js";

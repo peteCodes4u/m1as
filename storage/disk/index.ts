@@ -1,1 +1,1 @@
-export * from "./diskStorageAdapter";
+export * from "./diskStorageAdapter.js";

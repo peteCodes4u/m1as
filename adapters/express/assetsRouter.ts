@@ -1,6 +1,6 @@
 import express, { Request, Response, Router } from "express";
 import multer from "multer";
-import { AssetManager } from "../../core/assets/assetManager";
+import { AssetManager } from "../../core/assets/assetManager.js";
 
 export interface AssetRouterOptions {
   assetManager: AssetManager;
@@ -19,14 +19,15 @@ export function createAssetRouter(options: AssetRouterOptions): Router {
     upload.single("file"),
     async (req: Request, res: Response) => {
       try {
-        if (!req.file) return res.status(400).json({ error: "No file" });
+        const file = req.file;
+        if (!file) return res.status(400).json({ error: "No file uploaded in field 'file'" });
 
         const asset = await assetManager.upload({
-          buffer: req.file.buffer,
-          filename: req.file.originalname,
-          mimeType: req.file.mimetype,
-          size: req.file.size,
-          ownerId: getOwnerId?.(req)
+          buffer: file.buffer,
+          filename: file.originalname,
+          mimeType: file.mimetype,
+          size: file.size,
+          ownerId: getOwnerId?.(req),
         });
 
         res.json(asset);
@@ -37,17 +38,20 @@ export function createAssetRouter(options: AssetRouterOptions): Router {
     }
   );
 
+  // get asset
   // Get asset metadata
   router.get("/:id", async (req: Request, res: Response) => {
     try {
       const asset = await assetManager.get(req.params.id);
       if (!asset) return res.status(404).json({ error: "Not found" });
-      res.json(asset);
+
+      res.json(asset); // JSON metadata
     } catch (err: any) {
       console.error(err);
       res.status(500).json({ error: err.message });
     }
   });
+
 
   // Delete asset
   router.delete("/:id", async (req: Request, res: Response) => {

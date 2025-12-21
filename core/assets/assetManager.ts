@@ -3,8 +3,8 @@ import {
   AssetRepository,
   AssetCache,
   AssetUploadInput
-} from "./contracts";
-import { AssetRecord } from "./types";
+} from "./contracts.js";
+import { AssetRecord } from "./types.js";
 import { randomUUID } from "crypto";
 
 export class AssetManager {

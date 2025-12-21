@@ -1,4 +1,4 @@
-import { AssetId, AssetRecord } from "./types";
+import { AssetId, AssetRecord } from "./types.js";
 
 export interface AssetUploadInput {
   buffer: Buffer;

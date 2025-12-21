@@ -1,5 +1,5 @@
-import { AssetRepository } from "../core/assets/contracts";
-import { AssetId, AssetRecord } from "../core/assets/types";
+import { AssetRepository } from "../core/assets/contracts.js";
+import { AssetId, AssetRecord } from "../core/assets/types.js";
 
 export class InMemoryAssetRepo implements AssetRepository {
   private store = new Map<AssetId, AssetRecord>();
