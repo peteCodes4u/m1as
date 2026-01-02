@@ -1,4 +1,5 @@
 import express, { Request, Response, Router } from "express";
+import { fileTypeFromBuffer } from "file-type";
 import multer from "multer";
 import { AssetManager } from "../../core/assets/assetManager.js";
 
@@ -22,13 +23,24 @@ export function createAssetRouter(options: AssetRouterOptions): Router {
         const file = req.file;
         if (!file) return res.status(400).json({ error: "No file uploaded in field 'file'" });
 
-        const asset = await assetManager.upload({
-          buffer: file.buffer,
-          filename: file.originalname,
-          mimeType: file.mimetype,
-          size: file.size,
-          ownerId: getOwnerId?.(req),
-        });
+              // 🔍 Detect real file type from buffer
+      const detectedType = await fileTypeFromBuffer(file.buffer);
+
+      const mimeType =
+        detectedType?.mime ?? file.mimetype ?? "application/octet-stream";
+
+      const filename =
+        detectedType?.ext && !file.originalname.includes(".")
+          ? `${file.originalname}.${detectedType.ext}`
+          : file.originalname;
+
+      const asset = await assetManager.upload({
+        buffer: file.buffer,
+        filename,
+        mimeType,
+        size: file.size,
+        ownerId: getOwnerId?.(req),
+      });
 
         res.json(asset);
       } catch (err: any) {

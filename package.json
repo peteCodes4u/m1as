@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "express": "^5.2.1",
+    "file-type": "^21.2.0",
     "multer": "^2.0.2"
   }
 }
