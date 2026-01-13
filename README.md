@@ -148,6 +148,29 @@ npm run m1asTest
 
 ---
 
+## how to evaluate
+1. open a gitbash terminal and execute the npm scripts listed in the Getting Started section
+2. after m1as is running the service should report ok status on the health check http://localhost:${PORT}$/health
+3. Files can be uploaded by opening an auxillary gitbash terminal and executing the following curl:
+```ruby
+curl -v -X POST http://localhost:${PORT}$/assets \
+  -H "x-user-id: ANY-USER-123" \
+  -F "file=@C:<your-filepath>/<your-file>.png"
+```
+4. files can be retrieved by navigating to the following url
+```ruby
+http://localhost:<PORT>/assets/<id>/file
+```
+5. metadata can be retrieved by navigating to the to following url
+```ruby
+http://localhost:<PORT>/assets/<id>
+```
+6. to delete a file execute the following curl
+```ruby
+curl -v -X DELETE http://localhost:${PORT}$/assets/<id> \
+```
+---
+
 ## Versioning
 
 This repository represents:
