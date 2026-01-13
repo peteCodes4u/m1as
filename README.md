@@ -198,7 +198,7 @@ Planned focus areas include:
 
 ## Ownership & Attribution
 
-Developed by **Quartzion Technology Solutions Corp.**
+Developed by Peter J Smith (peteCodes4u) for **Quartzion Technology Solutions Corp.**
 
 This project is part of Quartzion’s broader mission to build ethical, scalable, and resilient technology systems.
 
