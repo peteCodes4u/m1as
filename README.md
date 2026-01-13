@@ -35,7 +35,7 @@ graph TD
     Router[Asset Router]
     Manager[AssetManager Domain Service]
     Repo[AssetRepository]
-    Cache[AssetCache (Optional)]
+    Cache["AssetCache (Optional)"]
     Storage[Storage Adapter]
     FS[Local File System]
     DB[(MongoDB)]
