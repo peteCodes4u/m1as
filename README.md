@@ -187,7 +187,7 @@ This project is part of Quartzion’s broader mission to build ethical, scalable
 
 
 mern-asset-service/
-```mermaid
+```ruby
 ├─ core/
 │  ├─ assetManager.ts        ← storage + validation
 │  ├─ assetRepository.ts     ← MongoDB logic
