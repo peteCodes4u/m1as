@@ -209,7 +209,7 @@ This project is part of Quartzion’s broader mission to build ethical, scalable
 🚧 **Proof of Concept – Active Development**
 
 
-mern-asset-service/
+## Physical Repository Layout (POC Implementation)
 ```ruby
 ├─ adapters/
 |  └─ express/
