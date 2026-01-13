@@ -188,27 +188,35 @@ This project is part of Quartzion’s broader mission to build ethical, scalable
 
 mern-asset-service/
 ```ruby
-├─ core/
-│  ├─ assetManager.ts        ← storage + validation
-│  ├─ assetRepository.ts     ← MongoDB logic
-│  ├─ storage/
-│  │  ├─ disk.ts
-│  │  ├─ memory.ts
-│  │  └─ s3.ts
-│  └─ types.ts
+├─ adapters/
+|  └─ express/
+│     ├─ assetRouter.ts
+│     └─ index.ts
 │
-├─ express/
-│  ├─ createAssetRouter.ts   ← m1as 1 (a)
-│  └─ middleware.ts
+├─ core/
+|  └─ assets/
+│     ├─ assetManager.ts        ← storage + validation
+│     ├─ mongoAssetRepo.ts     ← MongoDB logic
+│     ├─ index.ts
+│     ├─ mongooseModels.ts
+│     ├─ contracts.ts
+│     └─ types.ts
 │
 ├─ server/
-│  └─ createServer.ts        ← m1as 2 (b)
+│  ├─ inMemoryAssetRepo.ts   ← m1as 1 (a)
+│  └─ m1asServer.ts
+|  └─ db/
+│     └─ mongoClient.ts  
 │
-├─ client/
-│  └─ uploadAsset.ts
+├─ storage/
+│  └─ mongo/
+│     ├─ index.ts   ← m1as 1 (a)
+│     └─ mongoStorageAdapter.ts  
 │
-├─ react/
-│  └─ useAssetUpload.ts
 │
-└─ index.ts
+├─ .gitignore
+├─ LICENSE
+├─ package.json
+├─ README.md
+└─ tsconfig.json
 ```
